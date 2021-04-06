@@ -36,13 +36,15 @@ body{
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;  
-}
+  }
 .item{
     background: rgba(0, 0, 0, .6 );
     color: white;
     border-radius: 5px;
     padding: 10px;
     cursor: pointer;
+    margin: 15px;
+
 }
 .item:hover{
     background: rgba(0,0, 0, 0.8);
@@ -69,7 +71,7 @@ a:active{
    cursor: pointer;
     z-index: 2;
     color: white;
-    margin: 5px;
+    margin: 1px;
 }
 .fa-times-circle:hover{
     transform: scale(1.3);
