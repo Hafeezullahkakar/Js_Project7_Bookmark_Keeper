@@ -4,7 +4,7 @@ const modelClose = document.getElementById('close-model')
 const bookMarkForm = document.getElementById('form')
 const websiteName = document.getElementById('website-name')
 const websiteUrl  = document.getElementById('website-url')
-const bookmarkContainer= document.getElementById('model-container')
+const bookmarkContainer= document.getElementById('bookmarks-container')
 
 
 // Bookmarks Array
@@ -39,8 +39,8 @@ function Validate(nameVal, urlVal){
         return false;
     }
     if(urlVal.match(regex)){
-        alert("match")
-    }
+       return true;
+        }
     if(!urlVal.match(regex)){
         alert("Please provid proper url!")
         return false; 
@@ -65,23 +65,42 @@ function fetchBookmarks(){
     }
     buildBookmark();
 }
+
+//Delete Bookmark
+function deleteBookmark(url){
+    bookmarks.forEach((bookmark,index)=>{
+        if(bookmark.url === url){
+            bookmarks.splice(index, 1); 
+        }
+    })
+    localStorage.setItem('bookmarks', JSON.stringify(bookmarks))
+    fetchBookmarks();
+    bookMarkForm.reset();  
+
+}
 //Build Bookmark DOM
 function buildBookmark(){
-    //Build items
-    bookmarks.forEach((bookmark)=>{
+    //Remove bookmarks
+bookmarkContainer.textContent = ''
+ //Build items
+ bookmarks.forEach((bookmark)=>{
     const {name, url} = bookmark;
     //Create item element
     const item = document.createElement('div')
     item.classList.add('item')
     //Close icon
     const closeIcon = document.createElement('i')
-    closeIcon.classList.add('fas', 'fa-time')
+    closeIcon.classList.add('fas', 'fa-times-circle')
     closeIcon.setAttribute('title', 'Delete Bookmark')
     closeIcon.setAttribute('onclick', `deleteBookmark('${url}')`)
-    //
-
-          
-        
+    //Creating link elements
+    const link = document.createElement('a')
+    link.setAttribute('href', `${url}`)
+    link.setAttribute('target', '_blank')
+    link.textContent = name;    
+    //Appending bookmarks
+    item.append(link, closeIcon)
+    bookmarkContainer.appendChild(item)        
     })
 }
 
