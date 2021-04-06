@@ -9,8 +9,7 @@ const bookmarkContainer= document.getElementById('model-container')
 
 // Bookmarks Array
 let bookmarks = [];
-// Show Model
-
+// Show Model & close modal
 function showModel(){
     modal.classList.add('show-model')
     websiteName.focus();
@@ -51,6 +50,42 @@ function Validate(nameVal, urlVal){
 
 }
 
+// Fetch locally sotored bookmarks 
+function fetchBookmarks(){
+    if(localStorage.getItem('bookmarks')){
+        bookmarks = JSON.parse(localStorage.getItem('bookmarks'))
+    }
+    else{
+        //create bookmarks arrya
+        bookmarks = [{
+            name: 'Prisma Insigth',
+            url: 'https://parismainsights.tect'
+        }]
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks))
+    }
+    buildBookmark();
+}
+//Build Bookmark DOM
+function buildBookmark(){
+    //Build items
+    bookmarks.forEach((bookmark)=>{
+    const {name, url} = bookmark;
+    //Create item element
+    const item = document.createElement('div')
+    item.classList.add('item')
+    //Close icon
+    const closeIcon = document.createElement('i')
+    closeIcon.classList.add('fas', 'fa-time')
+    closeIcon.setAttribute('title', 'Delete Bookmark')
+    closeIcon.setAttribute('onclick', `deleteBookmark('${url}')`)
+    //
+
+          
+        
+    })
+}
+
+//Storing Bookmarks in local Storage
 function storeBookmark(e){
     e.preventDefault();
     const webName =websiteName.value;
@@ -66,9 +101,14 @@ function storeBookmark(e){
         name: webName,
         url: webUrl
     }
-    bookmarks.push(bookmark);
-    console.log(bookmarks)
+    bookmarks.push(bookmark); 
+    localStorage.setItem('bookmarks',JSON.stringify(bookmarks))
+    fetchBookmarks()
     bookMarkForm.reset();    
+    websiteName.focus() 
 }
 
 bookMarkForm.addEventListener('submit', storeBookmark)
+
+//on load fetch bookmarks
+fetchBookmarks();
